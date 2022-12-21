@@ -11,10 +11,10 @@ module Customer
   , TrackCustomerEventBody(..)
   ) where
 
-import Customer.API (api)
-import Customer.Types.ReportPushMetrics (ReportPushMetricsBody(..), defaultReportPushMetrics)
-import Customer.Types.TrackAnonymusEvent (TrackAnonymusEventBody(..), defaultTrackAnonymusEvent)
-import Customer.Types.TrackCustomerEvent (TrackCustomerEventBody(..), defaultTrackCustomerEvent)
+import Customer.Events.API (api)
+import Customer.Events.Types.ReportPushMetrics (ReportPushMetricsBody(..), defaultReportPushMetrics)
+import Customer.Events.Types.TrackAnonymusEvent (TrackAnonymusEventBody(..), defaultTrackAnonymusEvent)
+import Customer.Events.Types.TrackCustomerEvent (TrackCustomerEventBody(..), defaultTrackCustomerEvent)
 import Data.Text (Text)
 import qualified Network.HTTP.Client as HTTP
 import Servant.API

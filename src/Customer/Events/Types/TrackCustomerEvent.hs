@@ -2,25 +2,24 @@
 --
 -- SPDX-License-Identifier: Apache-2.0
 
-module Customer.Types.TrackCustomerEvent
+module Customer.Events.Types.TrackCustomerEvent
   ( TrackCustomerEventBody(..)
   , defaultTrackCustomerEvent
   ) where
 
 import Customer.Aeson (defaultAesonOptions)
-import Data.Aeson (Object, ToJSON(toJSON), genericToJSON)
+import Data.Aeson (Object)
+import Data.Aeson.TH (deriveToJSON)
 import Data.Text (Text)
-import GHC.Generics (Generic)
 
 data TrackCustomerEventBody = MkTrackCustomerEvent
   { tceName      :: Text
   , tceId        :: Maybe Text
   , tceTimestamp :: Maybe Int
   , tceData      :: Maybe Object
-  }deriving stock (Generic)
+  }
 
-instance ToJSON TrackCustomerEventBody where
-  toJSON = genericToJSON (defaultAesonOptions "tce")
+deriveToJSON defaultAesonOptions ''TrackCustomerEventBody
 
 defaultTrackCustomerEvent :: Text -> TrackCustomerEventBody
 defaultTrackCustomerEvent name = MkTrackCustomerEvent name Nothing Nothing Nothing

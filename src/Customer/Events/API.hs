@@ -2,11 +2,11 @@
 --
 -- SPDX-License-Identifier: Apache-2.0
 
-module Customer.API (api) where
+module Customer.Events.API (api) where
 
-import Customer.Types.ReportPushMetrics (ReportPushMetricsBody)
-import Customer.Types.TrackAnonymusEvent (TrackAnonymusEventBody)
-import Customer.Types.TrackCustomerEvent (TrackCustomerEventBody)
+import Customer.Events.Types.ReportPushMetrics (ReportPushMetricsBody)
+import Customer.Events.Types.TrackAnonymusEvent (TrackAnonymusEventBody)
+import Customer.Events.Types.TrackCustomerEvent (TrackCustomerEventBody)
 import Data.Proxy (Proxy(..))
 import Data.Text (Text)
 import Servant.API (BasicAuth, Capture, JSON, Post, ReqBody, type (:<|>), type (:>))

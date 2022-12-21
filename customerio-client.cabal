@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           customer-client
+name:           customerio-client
 version:        0.1.0
 synopsis:       Client for customer.io
 description:    Simple for usage client for customer.io
@@ -26,12 +26,12 @@ library
   exposed-modules:
       Customer
       Customer.Aeson
-      Customer.API
-      Customer.Types.ReportPushMetrics
-      Customer.Types.TrackAnonymusEvent
-      Customer.Types.TrackCustomerEvent
+      Customer.Events.API
+      Customer.Events.Types.ReportPushMetrics
+      Customer.Events.Types.TrackAnonymusEvent
+      Customer.Events.Types.TrackCustomerEvent
   other-modules:
-      Paths_customer_client
+      Paths_customerio_client
   hs-source-dirs:
       src
   default-extensions:
@@ -83,6 +83,7 @@ library
   ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-implicit-prelude
   build-depends:
       aeson
+    , aeson-casing
     , base
     , http-client
     , servant

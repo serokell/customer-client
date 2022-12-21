@@ -4,12 +4,8 @@
 
 module Customer.Aeson (defaultAesonOptions) where
 
-import Data.Aeson (Options(fieldLabelModifier), camelTo2, defaultOptions)
+import Data.Aeson (Options)
+import Data.Aeson.Casing ( aesonPrefix, snakeCase )
 
-defaultAesonOptions :: String -> Options
-defaultAesonOptions prefix = defaultOptions
-  { fieldLabelModifier = camelToSnake . dropPrefix
-  }
-  where
-    camelToSnake = camelTo2 '_'
-    dropPrefix = drop (length prefix)
+defaultAesonOptions :: Options
+defaultAesonOptions = aesonPrefix snakeCase

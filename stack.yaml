@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Serokell <https://serokell.io>
+#
+# SPDX-License-Identifier: Apache-2.0
 
 resolver: lts-20.4
 

@@ -33,17 +33,24 @@ jobs:
         run: cabal build all --enable-tests --enable-benchmarks
       - name: test all
         run: cabal test all --enable-tests
-      - name: check reuse
-        run: nix-shell -p reuse --command "reuse lint" 
     strategy:
       matrix:
         cabal:
           - '3.4'
         ghc:
+          - '9.2.5'
           - '9.0.2'
           - '8.10.7'
           - '8.8.4'
-          - '8.6.5'
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: check reuse
+        run: nix-shell -p reuse --command "reuse lint"
 name: Haskell CI
 on:
   - push

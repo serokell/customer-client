@@ -36,3 +36,7 @@ you must be able to justify that.
   - [ ] If I added new functionality, I added tests covering it.
   - [ ] If I fixed a bug, I added a regression test to prevent the bug from
         silently reappearing again.
+
+#### Stylistic guide (mandatory)
+
+- [ ] My commits comply with [the policy used in Serokell](https://www.notion.so/serokell/Where-and-how-to-commit-your-work-58f8973a4b3142c8abbd2e6fd5b3a08e).

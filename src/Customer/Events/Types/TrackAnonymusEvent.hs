@@ -2,15 +2,15 @@
 --
 -- SPDX-License-Identifier: Apache-2.0
 
-module Customer.Types.TrackAnonymusEvent
+module Customer.Events.Types.TrackAnonymusEvent
   ( TrackAnonymusEventBody(..)
   , defaultTrackAnonymusEvent
   ) where
 
 import Customer.Aeson (defaultAesonOptions)
-import Data.Aeson (Object, ToJSON(toJSON), genericToJSON)
+import Data.Aeson (Object)
+import Data.Aeson.TH (deriveToJSON)
 import Data.Text (Text)
-import GHC.Generics (Generic)
 
 data TrackAnonymusEventBody = MkTrackAnonymusEvent
   { taeName        :: Text
@@ -18,10 +18,9 @@ data TrackAnonymusEventBody = MkTrackAnonymusEvent
   , taeId          :: Maybe Text
   , taeTimestamp   :: Maybe Int
   , taeData        :: Maybe Object
-  } deriving stock (Generic)
+  }
 
-instance ToJSON TrackAnonymusEventBody where
-  toJSON = genericToJSON (defaultAesonOptions "tae")
+deriveToJSON defaultAesonOptions ''TrackAnonymusEventBody
 
 defaultTrackAnonymusEvent :: Text -> TrackAnonymusEventBody
 defaultTrackAnonymusEvent name = MkTrackAnonymusEvent name Nothing Nothing Nothing Nothing
