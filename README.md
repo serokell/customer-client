@@ -10,7 +10,7 @@
 
 ## Build Instructions
 
-Run `make` to build everything.
+Run `nix develop -c cabal build` to build everything.
 
 ## For Contributors
 

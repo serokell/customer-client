@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: cabal build all --enable-tests --enable-benchmarks --only-dependencies
       - name: build all
-        run: cabal build all --enable-tests --enable-benchmarks --ghc-options="-Werror"
+        run: cabal build all --enable-tests --enable-benchmarks
       - name: test all
         run: cabal test all --enable-tests
     strategy:
