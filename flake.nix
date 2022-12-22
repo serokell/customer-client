@@ -20,7 +20,7 @@
         jailbreakUnbreak = pkg:
           pkgs.haskell.lib.doJailbreak (pkg.overrideAttrs (_: { meta = { }; }));
 
-        packageName = "customer-client";
+        packageName = "customerio-client";
       in {
         packages.${packageName} =
           haskellPackages.callCabal2nix packageName self rec {

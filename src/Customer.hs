@@ -11,15 +11,18 @@ module Customer
   , TrackCustomerEventBody(..)
   ) where
 
-import Customer.Events.API (api)
-import Customer.Events.Types.ReportPushMetrics (ReportPushMetricsBody(..), defaultReportPushMetrics)
-import Customer.Events.Types.TrackAnonymusEvent (TrackAnonymusEventBody(..), defaultTrackAnonymusEvent)
-import Customer.Events.Types.TrackCustomerEvent (TrackCustomerEventBody(..), defaultTrackCustomerEvent)
+import Customer.Track.Events.API (api)
+import Customer.Track.Events.Types.ReportPushMetrics
+  (ReportPushMetricsBody(..), defaultReportPushMetrics)
+import Customer.Track.Events.Types.TrackAnonymusEvent (TrackAnonymusEventBody(..))
+import Customer.Track.Events.Types.TrackCustomerEvent
+  (TrackCustomerEventBody(..), defaultTrackCustomerEvent)
 import Data.Text (Text)
 import qualified Network.HTTP.Client as HTTP
 import Servant.API
 import Servant.Client
 
+-- | Default host of the track API: https://track.customer.io:443
 host :: BaseUrl
 host = BaseUrl Https "track.customer.io" 443 ""
 
@@ -28,10 +31,16 @@ data Env = MkEnv
   , clientEnv :: ClientEnv
   }
 
-mkEnv :: BasicAuthData -> HTTP.Manager -> Env
-mkEnv authtoken httpManager = MkEnv {..}
+-- | Same as `mkEnvDef`, but you can change BaseUrl.
+--   May be useful only if `host` is outdated.
+mkEnv :: BaseUrl -> BasicAuthData -> HTTP.Manager -> Env
+mkEnv host' authtoken httpManager = MkEnv {..}
   where
-    clientEnv = mkClientEnv httpManager host
+    clientEnv = mkClientEnv httpManager host'
+
+-- | Default way to create client environment
+mkEnvDef :: BasicAuthData -> HTTP.Manager -> Env
+mkEnvDef = mkEnv host
 
 trackCustomerEventC :: BasicAuthData -> Text -> TrackCustomerEventBody -> ClientM ()
 trackAnonymusEventC :: BasicAuthData -> TrackAnonymusEventBody -> ClientM ()
@@ -46,8 +55,8 @@ trackCustomerEventC' :: Env -> Text -> TrackCustomerEventBody -> IO (Either Clie
 trackCustomerEventC' MkEnv{..} identifier body = do
   runClientM (trackCustomerEventC authtoken identifier body) clientEnv
 
-trackAnonymusEventC' :: Env -> TrackAnonymusEventBody -> IO (Either ClientError ())
-trackAnonymusEventC' MkEnv{..} body = do
+trackAnonymusEvent :: Env -> TrackAnonymusEventBody -> IO (Either ClientError ())
+trackAnonymusEvent MkEnv{..} body = do
   runClientM (trackAnonymusEventC authtoken body) clientEnv
 
 reportPushMetricsC' :: Env -> ReportPushMetricsBody -> IO (Either ClientError ())
@@ -56,9 +65,6 @@ reportPushMetricsC' MkEnv{..} body = do
 
 trackCustomerEvent :: Env -> Text -> Text -> IO (Either ClientError ())
 trackCustomerEvent env identifier = trackCustomerEventC' env identifier . defaultTrackCustomerEvent
-
-trackAnonymusEvent :: Env -> Text -> IO (Either ClientError ())
-trackAnonymusEvent env = trackAnonymusEventC' env . defaultTrackAnonymusEvent
 
 reportPushMetrics :: Env -> IO (Either ClientError ())
 reportPushMetrics env = reportPushMetricsC' env defaultReportPushMetrics

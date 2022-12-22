@@ -4,7 +4,7 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Customer.Events.Types.ReportPushMetrics
+module Customer.Track.Events.Types.ReportPushMetrics
   ( ReportPushMetricsBody(..)
   , EventType(..)
   , defaultReportPushMetrics
@@ -26,7 +26,7 @@ instance ToJSON EventType where
 
 data ReportPushMetricsBody = MkReportPushMetrics
   { rpmDeliveryId :: Maybe Text
-  , rpmEvent      :: Maybe Text
+  , rpmEvent      :: Maybe EventType
   , rpmDeviceId   :: Maybe Text
   , rpmTimestamp  :: Maybe Int
   }

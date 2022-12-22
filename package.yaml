@@ -79,6 +79,7 @@ ghc-options:
   - -Wno-missing-local-signatures
   - -Wno-monomorphism-restriction
   - -Wno-implicit-prelude
+  - -Wno-missing-kind-signatures # remove warnings about missing signatures of servant types, such as `type API :: Type`
 
 when:
   - condition: impl(ghc >= 8.10.0)
