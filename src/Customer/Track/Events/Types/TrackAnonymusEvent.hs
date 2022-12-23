@@ -21,10 +21,10 @@ import Data.Text (Text)
 data TrackAnonymusEventBody
   = MkStandardAnonymusEvent
     { saeName        :: Text
-    , saeAnonymousId :: Maybe Text
+    , saeAnonymousId :: Text
     , saeId          :: Maybe Text
     , saeTimestamp   :: Maybe Int
-    , saeData        :: Maybe Object
+    , saeData        :: Maybe StandardAnonymusData
     }
   | MkInviteAnonymusEvent
     { iaeName      :: Text
