@@ -1,13 +1,6 @@
 -- SPDX-FileCopyrightText: 2022 Serokell <https://serokell.io/>
 --
 -- SPDX-License-Identifier: Apache-2.0
-{-# LANGUAGE CPP #-}
-
-#if MIN_VERSION_GLASGOW_HASKELL(9,2,1,0)
-{-# LANGUAGE NoFieldSelectors #-}
-#endif
-
-{-# OPTIONS_GHC -Wno-partial-fields #-}
 
 module Customer.Track.Events.Types.TrackAnonymusEvent
   ( module Customer.Track.Events.Types.TrackAnonymusEvent
@@ -19,18 +12,22 @@ import Data.Aeson.TH (deriveToJSON)
 import Data.Text (Text)
 
 data TrackAnonymusEventBody
-  = MkStandardAnonymusEvent
-    { saeName        :: Text
-    , saeAnonymousId :: Text
-    , saeId          :: Maybe Text
-    , saeTimestamp   :: Maybe Int
-    , saeData        :: Maybe StandardAnonymusData
-    }
-  | MkInviteAnonymusEvent
-    { iaeName      :: Text
-    , iaeData      :: InviteAnonymusData
-    , iaeTimestamp :: Maybe Int
-    }
+  = StandardAnonymusEventBody StandardAnonymusEvent
+  | InviteAnonymusEventBody InviteAnonymusEvent
+
+data StandardAnonymusEvent = MkStandardAnonymusEvent
+  { saeName        :: Text
+  , saeAnonymousId :: Text
+  , saeId          :: Maybe Text
+  , saeTimestamp   :: Maybe Int
+  , saeData        :: Maybe StandardAnonymusData
+  }
+
+data InviteAnonymusEvent = MkInviteAnonymusEvent
+  { iaeName      :: Text
+  , iaeData      :: InviteAnonymusData
+  , iaeTimestamp :: Maybe Int
+  }
 
 data StandardAnonymusData = MkStandardAnonymusData
   { sadFromAddress      :: Maybe Text
@@ -66,4 +63,20 @@ instance ToJSON InviteAnonymusData where
         , mkPair "reply_to" <$> iadReplyTo
         ]
 
+defaultStandardAnonymusEvent
+  :: Text -- ^ name
+  -> Text -- ^ anonymous_id
+  -> StandardAnonymusEvent
+defaultStandardAnonymusEvent name anonymousId =
+  MkStandardAnonymusEvent name anonymousId  Nothing Nothing Nothing
+
+defaultInviteAnonymusEvent
+  :: Text -- ^ name
+  -> Text -- ^ recipient (from `data` field)
+  -> InviteAnonymusEvent
+defaultInviteAnonymusEvent name recipient =
+  MkInviteAnonymusEvent name (MkInviteAnonymusData recipient Nothing Nothing Nothing) Nothing
+
+deriveToJSON defaultAesonOptions ''StandardAnonymusEvent
+deriveToJSON defaultAesonOptions ''InviteAnonymusEvent
 deriveToJSON (defaultAesonOptions {sumEncoding = UntaggedValue}) ''TrackAnonymusEventBody

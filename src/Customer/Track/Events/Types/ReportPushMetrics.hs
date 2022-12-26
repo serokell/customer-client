@@ -31,7 +31,7 @@ data ReportPushMetricsBody = MkReportPushMetrics
   , rpmTimestamp  :: Maybe Int
   }
 
-deriveToJSON defaultAesonOptions ''ReportPushMetricsBody
-
 defaultReportPushMetrics :: ReportPushMetricsBody
 defaultReportPushMetrics = MkReportPushMetrics Nothing Nothing Nothing Nothing
+
+deriveToJSON defaultAesonOptions ''ReportPushMetricsBody

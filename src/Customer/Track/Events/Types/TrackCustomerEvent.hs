@@ -36,7 +36,9 @@ instance ToJSON CustomerEventData where
         , mkPair "properties"  <$> cedProperties
         ]
 
-defaultTrackCustomerEvent :: Text -> TrackCustomerEventBody
+defaultTrackCustomerEvent
+  :: Text -- ^ name
+  -> TrackCustomerEventBody
 defaultTrackCustomerEvent name = MkTrackCustomerEvent name Nothing Nothing Nothing
 
 deriveToJSON defaultAesonOptions ''TrackCustomerEventBody

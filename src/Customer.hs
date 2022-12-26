@@ -6,17 +6,15 @@
 
 module Customer
   ( module Customer
-  , ReportPushMetricsBody(..)
-  , TrackAnonymusEventBody(..)
-  , TrackCustomerEventBody(..)
+  , module Customer.Track.Events.Types.ReportPushMetrics
+  , module Customer.Track.Events.Types.TrackAnonymusEvent
+  , module Customer.Track.Events.Types.TrackCustomerEvent
   ) where
 
 import Customer.Track.Events.API (api)
 import Customer.Track.Events.Types.ReportPushMetrics
-  (ReportPushMetricsBody(..), defaultReportPushMetrics)
-import Customer.Track.Events.Types.TrackAnonymusEvent (TrackAnonymusEventBody(..))
+import Customer.Track.Events.Types.TrackAnonymusEvent
 import Customer.Track.Events.Types.TrackCustomerEvent
-  (TrackCustomerEventBody(..), defaultTrackCustomerEvent)
 import Data.Text (Text)
 import qualified Network.HTTP.Client as HTTP
 import Servant.API
@@ -51,20 +49,14 @@ trackCustomerEventC
   :<|> reportPushMetricsC
   = client api
 
-trackCustomerEventC' :: Env -> Text -> TrackCustomerEventBody -> IO (Either ClientError ())
-trackCustomerEventC' MkEnv{..} identifier body = do
+trackCustomerEvent :: Env -> Text -> TrackCustomerEventBody -> IO (Either ClientError ())
+trackCustomerEvent MkEnv{..} identifier body = do
   runClientM (trackCustomerEventC authtoken identifier body) clientEnv
 
 trackAnonymusEvent :: Env -> TrackAnonymusEventBody -> IO (Either ClientError ())
 trackAnonymusEvent MkEnv{..} body = do
   runClientM (trackAnonymusEventC authtoken body) clientEnv
 
-reportPushMetricsC' :: Env -> ReportPushMetricsBody -> IO (Either ClientError ())
-reportPushMetricsC' MkEnv{..} body = do
+reportPushMetrics :: Env -> ReportPushMetricsBody -> IO (Either ClientError ())
+reportPushMetrics MkEnv{..} body = do
   runClientM (reportPushMetricsC body) clientEnv
-
-trackCustomerEvent :: Env -> Text -> Text -> IO (Either ClientError ())
-trackCustomerEvent env identifier = trackCustomerEventC' env identifier . defaultTrackCustomerEvent
-
-reportPushMetrics :: Env -> IO (Either ClientError ())
-reportPushMetrics env = reportPushMetricsC' env defaultReportPushMetrics

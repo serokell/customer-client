@@ -1,5 +1,5 @@
 <!--
-   - SPDX-FileCopyrightText: 2019-2021 Serokell <https://serokell.io>
+   - SPDX-FileCopyrightText: 2022-2023 Serokell <https://serokell.io>
    -
    - SPDX-License-Identifier: Apache-2.0
    -->
@@ -7,6 +7,15 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # Customer.io client for haskell
+
+servant-client based client for track API of customer.io
+
+Currently supported:
+- [ ] Account Region
+- [ ] Customers
+- [x] Events
+- [ ] Forms
+- [ ] Segments
 
 ## Build Instructions
 
